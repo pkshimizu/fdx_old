@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<fx:root type="HBox"
+         xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         maxHeight="25.0"
+         minHeight="25.0"
+         prefHeight="25.0"
+         prefWidth="600.0"
+         style="-fx-background-color: #6DC1FF;"
+>
+
+</fx:root>
