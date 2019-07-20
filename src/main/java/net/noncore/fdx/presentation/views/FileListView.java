@@ -1,14 +1,20 @@
 package net.noncore.fdx.presentation.views;
 
-import javafx.scene.layout.HBox;
+import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import net.noncore.fdx.presentation.viewmodel.FileListViewModel;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FileListView extends CustomView<HBox> {
-    @Override
-    protected HBox createRoot() {
-        return new HBox();
-    }
+@RequiredArgsConstructor
+public class FileListView extends View<AnchorPane> {
+    @NonNull
+    private FileListViewModel viewModel;
+    @FXML
+    private ListView listView;
 
     @Override
     protected String getFxmlName() {
@@ -17,6 +23,6 @@ public class FileListView extends CustomView<HBox> {
 
     @Override
     protected void initialize() {
-
+        viewModel.initialize(listView);
     }
 }

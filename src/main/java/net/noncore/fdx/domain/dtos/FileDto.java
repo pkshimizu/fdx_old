@@ -1,14 +1,16 @@
-package net.noncore.fdx.data.entities.file;
+package net.noncore.fdx.domain.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Value;
 
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
-@AllArgsConstructor
-@Getter
-public abstract class FileResource {
-    private final Path path;
+@Value
+@Builder
+public class FileDto {
+    private final String name;
+    private final Optional<Long> size;
     private final boolean readable;
     private final boolean writable;
     private final boolean executable;

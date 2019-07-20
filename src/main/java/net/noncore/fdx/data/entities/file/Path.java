@@ -11,6 +11,8 @@ public class Path {
     private final String name;
     private final String absolutePath;
 
+    public static final Path USER_HOME = Path.of(System.getProperty("user.home"));
+
     public static Path of(String text) {
         if (isEmpty(text)) {
             return null;

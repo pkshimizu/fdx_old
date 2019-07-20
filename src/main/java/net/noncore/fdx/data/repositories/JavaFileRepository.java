@@ -1,6 +1,9 @@
 package net.noncore.fdx.data.repositories;
 
-import net.noncore.fdx.data.entities.file.*;
+import net.noncore.fdx.data.entities.file.File;
+import net.noncore.fdx.data.entities.file.Path;
+import net.noncore.fdx.data.entities.file.Size;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,28 +12,18 @@ import java.nio.file.attribute.FileTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Component
 public class JavaFileRepository implements FileRepository {
     @Override
-    public FileResource find(Path path) {
-        return createFileResource(Paths.get(path.getAbsolutePath()).toFile());
+    public File find(Path path) {
+        return toFile(Paths.get(path.getAbsolutePath()).toFile());
     }
 
-    private FileResource createFileResource(java.io.File file) {
-        if (file.isDirectory()) {
-            return Folder.builder()
-                    .path(Path.of(file.getAbsolutePath()))
-                    .readable(file.canRead())
-                    .writable(file.canWrite())
-                    .executable(file.canExecute())
-                    .hidden(file.isHidden())
-                    .exists(file.exists())
-                    .dateTime(toZonedDateTime(file.lastModified()))
-                    .resources(toResources(file.listFiles()))
-                    .build();
-        }
+    private File toFile(java.io.File file) {
         return File.builder()
                 .path(Path.of(file.getAbsolutePath()))
                 .readable(file.canRead())
@@ -39,13 +32,20 @@ public class JavaFileRepository implements FileRepository {
                 .hidden(file.isHidden())
                 .exists(file.exists())
                 .dateTime(toZonedDateTime(file.lastModified()))
-                .size(Size.of(file.length()))
+                .size(getSize(file))
                 .build();
     }
 
-    private List<FileResource> toResources(java.io.File[] files) {
+    private Optional<Size> getSize(java.io.File file) {
+        if (file.isFile()) {
+            return Optional.of(Size.of(file.length()));
+        }
+        return Optional.empty();
+    }
+
+    private List<File> toFiles(java.io.File[] files) {
         return Stream.of(files)
-                .map(this::createFileResource)
+                .map(this::toFile)
                 .collect(Collectors.toList());
     }
 
@@ -56,107 +56,109 @@ public class JavaFileRepository implements FileRepository {
     }
 
     @Override
-    public List<Folder> getRoots() {
-        return toResources(java.io.File.listRoots()).stream()
-                .filter(Folder.class::isInstance)
-                .map(file -> (Folder)file)
-                .collect(Collectors.toList());
+    public List<File> getRoots() {
+        return toFiles(java.io.File.listRoots());
     }
 
     @Override
-    public File createFile(Folder folder, String name) {
-        java.nio.file.Path path = Paths.get(folder.getPath().getAbsolutePath(), name);
+    public List<File> findFiles(Path path) {
+        return toFiles(Paths.get(path.getAbsolutePath()).toFile().listFiles());
+    }
+
+    @Override
+    public File createFile(Path path) {
+        java.nio.file.Path filePath = Paths.get(path.getAbsolutePath());
         try {
-            Files.createFile(path);
-            return (File) createFileResource(path.toFile());
+            Files.createFile(filePath);
+            return toFile(filePath.toFile());
         } catch (IOException e) {
             throw new FileErrorException(Path.of(path.toString()), e);
         }
     }
 
     @Override
-    public Folder createFolder(Folder folder, String name) {
-        java.nio.file.Path path = Paths.get(folder.getPath().getAbsolutePath(), name);
+    public File createFolder(Path path) {
+        java.nio.file.Path filePath = Paths.get(path.getAbsolutePath());
         try {
-            Files.createDirectories(path);
-            return (Folder) createFileResource(path.toFile());
+            Files.createDirectories(filePath);
+            return toFile(filePath.toFile());
         } catch (IOException e) {
             throw new FileErrorException(Path.of(path.toString()), e);
         }
     }
 
     @Override
-    public File copyFile(File target, Folder destination) {
+    public File copyFile(File target, Path destination) {
         try {
             java.nio.file.Path path = Files.copy(
                     Paths.get(target.getPath().getAbsolutePath()),
-                    Paths.get(destination.getPath().getAbsolutePath()));
-            return (File) createFileResource(path.toFile());
+                    Paths.get(destination.getAbsolutePath()));
+            return (File) toFile(path.toFile());
         } catch (IOException e) {
             throw new FileErrorException(target.getPath(), e);
         }
     }
 
     @Override
-    public Folder copyFolder(Folder target, Folder destination) {
+    public File copyFolder(File target, Path destination) {
         try {
             java.nio.file.Path path = Files.copy(
                     Paths.get(target.getPath().getAbsolutePath()),
-                    Paths.get(destination.getPath().getAbsolutePath()));
-            return (Folder) createFileResource(path.toFile());
+                    Paths.get(destination.getAbsolutePath()));
+            return toFile(path.toFile());
         } catch (IOException e) {
             throw new FileErrorException(target.getPath(), e);
         }
     }
 
     @Override
-    public File moveFile(File target, Folder destination) {
+    public File moveFile(File target, Path destination) {
         try {
             java.nio.file.Path path = Files.move(
                     Paths.get(target.getPath().getAbsolutePath()),
-                    Paths.get(destination.getPath().getAbsolutePath()));
-            return (File) createFileResource(path.toFile());
+                    Paths.get(destination.getAbsolutePath()));
+            return toFile(path.toFile());
         } catch (IOException e) {
             throw new FileErrorException(target.getPath(), e);
         }
     }
 
     @Override
-    public Folder moveFolder(Folder target, Folder destination) {
+    public File moveFolder(File target, Path destination) {
         try {
             java.nio.file.Path path = Files.move(
                     Paths.get(target.getPath().getAbsolutePath()),
-                    Paths.get(destination.getPath().getAbsolutePath()));
-            return (Folder) createFileResource(path.toFile());
+                    Paths.get(destination.getAbsolutePath()));
+            return toFile(path.toFile());
         } catch (IOException e) {
             throw new FileErrorException(target.getPath(), e);
         }
     }
 
     @Override
-    public void deleteFile(File target) {
+    public void deleteFile(Path target) {
         try {
-            Files.delete(Paths.get(target.getPath().getAbsolutePath()));
+            Files.delete(Paths.get(target.getAbsolutePath()));
         } catch (IOException e) {
-            throw new FileErrorException(target.getPath(), e);
+            throw new FileErrorException(target, e);
         }
     }
 
     @Override
-    public void deleteFolder(Folder target) {
+    public void deleteFolder(Path target) {
         try {
-            Files.delete(Paths.get(target.getPath().getAbsolutePath()));
+            Files.delete(Paths.get(target.getAbsolutePath()));
         } catch (IOException e) {
-            throw new FileErrorException(target.getPath(), e);
+            throw new FileErrorException(target, e);
         }
     }
 
     @Override
-    public Size computeSize(Folder folder) {
-        long bites = folder.getResources().stream()
-                .filter(File.class::isInstance)
-                .map(File.class::cast)
+    public Size computeSize(Path path) {
+        long bites = findFiles(path).stream()
                 .map(File::getSize)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .map(Size::getBites)
                 .mapToLong(l -> l)
                 .sum();

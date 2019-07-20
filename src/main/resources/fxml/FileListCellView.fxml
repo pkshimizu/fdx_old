@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minWidth="0.0" prefHeight="16.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="name" text="File Name" textOverrun="CENTER_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font name="Osaka-Mono" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="size" text="Size" textOverrun="CENTER_ELLIPSIS" AnchorPane.rightAnchor="170.0" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font name="Osaka" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="date" text="Date" textOverrun="CENTER_ELLIPSIS" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font name="Osaka-Mono" size="16.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
