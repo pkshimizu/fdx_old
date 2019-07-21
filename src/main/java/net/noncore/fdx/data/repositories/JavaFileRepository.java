@@ -1,8 +1,10 @@
 package net.noncore.fdx.data.repositories;
 
 import net.noncore.fdx.data.entities.file.File;
+import net.noncore.fdx.data.entities.file.FileType;
 import net.noncore.fdx.data.entities.file.Path;
 import net.noncore.fdx.data.entities.file.Size;
+import net.noncore.fdx.helper.Case;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -25,6 +27,7 @@ public class JavaFileRepository implements FileRepository {
 
     private File toFile(java.io.File file) {
         return File.builder()
+                .type(toType(file))
                 .path(Path.of(file.getAbsolutePath()))
                 .readable(file.canRead())
                 .writable(file.canWrite())
@@ -34,6 +37,14 @@ public class JavaFileRepository implements FileRepository {
                 .dateTime(toZonedDateTime(file.lastModified()))
                 .size(getSize(file))
                 .build();
+    }
+
+    private FileType toType(java.io.File file) {
+        return Case.of(file)
+                .when(java.io.File::isDirectory).then(FileType.FOLDER)
+                .when(java.io.File::isFile).then(FileType.FILE)
+                .other().then(FileType.OTHER)
+                .end();
     }
 
     private Optional<Size> getSize(java.io.File file) {

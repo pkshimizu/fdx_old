@@ -9,6 +9,7 @@ import java.util.Optional;
 @Getter
 @Builder
 public final class File {
+    private final FileType type;
     private final Path path;
     private final Optional<Size> size;
     private final boolean readable;
