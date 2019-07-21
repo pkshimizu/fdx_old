@@ -8,7 +8,7 @@ import javafx.scene.control.ListView;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import net.noncore.fdx.domain.dtos.FileDto;
+import net.noncore.fdx.domain.models.FileModel;
 import net.noncore.fdx.domain.usecases.filelist.load.LoadFileListRequest;
 import net.noncore.fdx.domain.usecases.filelist.load.LoadFileListResponse;
 import net.noncore.fdx.domain.usecases.filelist.load.LoadFileListUsecase;
@@ -43,7 +43,7 @@ public class FileListViewModel {
         private StringProperty size;
         private StringProperty date;
 
-        public FileProperty(FileDto file) {
+        public FileProperty(FileModel file) {
             name = new SimpleStringProperty(file.getName());
             size = new SimpleStringProperty(file.getSize().map(size -> NumberFormat.getInstance().format(size)).orElse("<DIR>"));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh.mm.ss");

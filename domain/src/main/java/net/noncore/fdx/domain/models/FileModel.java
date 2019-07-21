@@ -1,4 +1,4 @@
-package net.noncore.fdx.domain.dtos;
+package net.noncore.fdx.domain.models;
 
 import lombok.Builder;
 import lombok.Value;
@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Value
 @Builder
-public class FileDto {
+public class FileModel {
     private final String name;
     private final Optional<Long> size;
     private final boolean readable;

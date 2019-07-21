@@ -6,7 +6,7 @@ import net.noncore.fdx.data.entities.file.File;
 import net.noncore.fdx.data.entities.file.Path;
 import net.noncore.fdx.data.entities.file.Size;
 import net.noncore.fdx.data.repositories.FileRepository;
-import net.noncore.fdx.domain.dtos.FileDto;
+import net.noncore.fdx.domain.models.FileModel;
 import net.noncore.fdx.domain.usecases.UsecaseError;
 import org.springframework.stereotype.Component;
 
@@ -21,16 +21,16 @@ public class LoadFileListUsecaseImpl implements LoadFileListUsecase {
 
     @Override
     public LoadFileListResponse doIt(LoadFileListRequest request) throws UsecaseError {
-        List<FileDto> files = fileRepository.findFiles(Path.USER_HOME).stream()
-                .map(this::toFileDto)
+        List<FileModel> files = fileRepository.findFiles(Path.USER_HOME).stream()
+                .map(this::toFileModel)
                 .collect(Collectors.toList());
         return LoadFileListResponse.builder()
                 .files(files)
                 .build();
     }
 
-    private FileDto toFileDto(File file) {
-        return FileDto.builder()
+    private FileModel toFileModel(File file) {
+        return FileModel.builder()
                 .name(file.getPath().getName())
                 .size(file.getSize().map(Size::getBites))
                 .dateTime(file.getDateTime())
