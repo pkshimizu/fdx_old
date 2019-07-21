@@ -1,6 +1,4 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-    }
-}
-rootProject.name = 'fdx'
+include 'data'
+include 'domain'
+include 'util'
+include 'gui'
