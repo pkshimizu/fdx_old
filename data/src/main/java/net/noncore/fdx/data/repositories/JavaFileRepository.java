@@ -4,7 +4,7 @@ import net.noncore.fdx.data.entities.file.File;
 import net.noncore.fdx.data.entities.file.FileType;
 import net.noncore.fdx.data.entities.file.Path;
 import net.noncore.fdx.data.entities.file.Size;
-import net.noncore.fdx.util.Case;
+import net.noncore.fdx.common.utils.Case;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
