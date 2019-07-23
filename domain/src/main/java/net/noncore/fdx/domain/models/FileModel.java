@@ -1,16 +1,20 @@
 package net.noncore.fdx.domain.models;
 
 import lombok.Builder;
-import lombok.Value;
+import lombok.Getter;
+import net.noncore.fdx.common.types.FileType;
+import net.noncore.fdx.common.values.Path;
+import net.noncore.fdx.common.values.Size;
 
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
-@Value
+@Getter
 @Builder
-public class FileModel {
-    private final String name;
-    private final Optional<Long> size;
+public final class FileModel {
+    private final FileType type;
+    private final Path path;
+    private final Optional<Size> size;
     private final boolean readable;
     private final boolean writable;
     private final boolean executable;

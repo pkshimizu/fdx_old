@@ -2,11 +2,10 @@ package net.noncore.fdx.domain.usecases.filelist.load;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import net.noncore.fdx.data.entities.file.File;
-import net.noncore.fdx.data.entities.file.Path;
-import net.noncore.fdx.data.entities.file.Size;
-import net.noncore.fdx.data.repositories.FileRepository;
 import net.noncore.fdx.domain.models.FileModel;
+import net.noncore.fdx.common.values.Path;
+import net.noncore.fdx.common.values.Size;
+import net.noncore.fdx.domain.repositories.FileRepository;
 import net.noncore.fdx.domain.usecases.UsecaseError;
 import org.springframework.stereotype.Component;
 
@@ -15,22 +14,22 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class LoadFileListUsecaseImpl implements LoadFileListUsecase {
+public class FileListLoadInteractor implements FileListLoadUsecase {
     @NonNull
     private final FileRepository fileRepository;
 
     @Override
-    public LoadFileListResponse doIt(LoadFileListRequest request) throws UsecaseError {
-        List<FileModel> files = fileRepository.findFiles(Path.USER_HOME).stream()
+    public FileListLoadResponse doIt(FileListLoadRequest request) throws UsecaseError {
+        List<FileDto> files = fileRepository.findFiles(Path.USER_HOME).stream()
                 .map(this::toFileModel)
                 .collect(Collectors.toList());
-        return LoadFileListResponse.builder()
+        return FileListLoadResponse.builder()
                 .files(files)
                 .build();
     }
 
-    private FileModel toFileModel(File file) {
-        return FileModel.builder()
+    private FileDto toFileModel(FileModel file) {
+        return FileDto.builder()
                 .name(file.getPath().getName())
                 .size(file.getSize().map(Size::getBites))
                 .dateTime(file.getDateTime())

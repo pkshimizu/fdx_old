@@ -1,4 +1,4 @@
-package net.noncore.fdx.data.entities.file;
+package net.noncore.fdx.common.types;
 
 public enum FileType {
     FILE,

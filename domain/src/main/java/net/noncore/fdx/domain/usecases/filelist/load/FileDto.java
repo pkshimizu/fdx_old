@@ -1,17 +1,16 @@
-package net.noncore.fdx.data.entities.file;
+package net.noncore.fdx.domain.usecases.filelist.load;
 
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Value;
 
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
-@Getter
+@Value
 @Builder
-public final class File {
-    private final FileType type;
-    private final Path path;
-    private final Optional<Size> size;
+public class FileDto {
+    private final String name;
+    private final Optional<Long> size;
     private final boolean readable;
     private final boolean writable;
     private final boolean executable;

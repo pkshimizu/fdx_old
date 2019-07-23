@@ -8,10 +8,10 @@ import javafx.scene.control.ListView;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import net.noncore.fdx.domain.models.FileModel;
-import net.noncore.fdx.domain.usecases.filelist.load.LoadFileListRequest;
-import net.noncore.fdx.domain.usecases.filelist.load.LoadFileListResponse;
-import net.noncore.fdx.domain.usecases.filelist.load.LoadFileListUsecase;
+import net.noncore.fdx.domain.usecases.filelist.load.FileDto;
+import net.noncore.fdx.domain.usecases.filelist.load.FileListLoadRequest;
+import net.noncore.fdx.domain.usecases.filelist.load.FileListLoadResponse;
+import net.noncore.fdx.domain.usecases.filelist.load.FileListLoadUsecase;
 import net.noncore.fdx.presentation.views.FileListCellView;
 import org.springframework.stereotype.Component;
 
@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
 public class FileListViewModel {
     private ListView listView;
     @NonNull
-    private LoadFileListUsecase loadFileListUsecase;
+    private FileListLoadUsecase fileListLoadUsecase;
 
     public void initialize(ListView listView) {
         this.listView = listView;
         listView.setCellFactory(param -> new FileListCell());
 
-        LoadFileListResponse response = loadFileListUsecase.doIt(new LoadFileListRequest("/path/to/folder"));
+        FileListLoadResponse response = fileListLoadUsecase.doIt(new FileListLoadRequest("/path/to/folder"));
         List<FileProperty> fileProperties = response.getFiles().stream().map(FileProperty::new).collect(Collectors.toList());
 
         listView.itemsProperty().set(FXCollections.observableArrayList(fileProperties));
@@ -43,7 +43,7 @@ public class FileListViewModel {
         private StringProperty size;
         private StringProperty date;
 
-        public FileProperty(FileModel file) {
+        FileProperty(FileDto file) {
             name = new SimpleStringProperty(file.getName());
             size = new SimpleStringProperty(file.getSize().map(size -> NumberFormat.getInstance().format(size)).orElse("<DIR>"));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh.mm.ss");

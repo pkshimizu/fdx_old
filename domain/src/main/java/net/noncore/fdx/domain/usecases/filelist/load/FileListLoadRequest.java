@@ -4,6 +4,6 @@ import lombok.Value;
 import net.noncore.fdx.domain.usecases.Request;
 
 @Value
-public class LoadFileListRequest implements Request {
+public class FileListLoadRequest implements Request {
     private String url;
 }

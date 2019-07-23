@@ -1,7 +1,8 @@
-package net.noncore.fdx.data.entities.file;
+package net.noncore.fdx.common.values;
 
 import lombok.Data;
 
+import java.io.File;
 import java.util.Optional;
 
 import static org.springframework.util.StringUtils.isEmpty;
@@ -17,14 +18,12 @@ public class Path {
         if (isEmpty(text)) {
             return null;
         }
-        java.io.File file = new java.io.File(text);
+        File file = new File(text);
         return new Path(file.getName(), file.getAbsolutePath());
     }
 
     public Optional<Path> getParent() {
-        java.io.File file = new java.io.File(absolutePath);
-        return file.getParent() == null ?
-                Optional.empty() :
-                Optional.ofNullable(Path.of(file.getParent()));
+        File file = new File(absolutePath);
+        return Optional.ofNullable(file.getParent()).map(Path::of);
     }
 }
