@@ -1,8 +1,10 @@
 package net.noncore.fdx.common.values;
 
+import javafx.beans.property.StringProperty;
 import lombok.Data;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import static org.springframework.util.StringUtils.isEmpty;
@@ -25,5 +27,9 @@ public class Path {
     public Optional<Path> getParent() {
         File file = new File(absolutePath);
         return Optional.ofNullable(file.getParent()).map(Path::of);
+    }
+
+    public Path getChild(String name) {
+        return Path.of(Paths.get(absolutePath, name).toString());
     }
 }
