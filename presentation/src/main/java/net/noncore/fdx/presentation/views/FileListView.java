@@ -22,7 +22,7 @@ public class FileListView extends View<AnchorPane> {
     }
 
     @Override
-    protected void initialize() {
+    protected void initialize(AnchorPane root) {
         viewModel.initialize(listView);
     }
 }

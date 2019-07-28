@@ -21,7 +21,7 @@ public abstract class View<T extends Parent> {
 
     protected abstract String getFxmlName();
 
-    protected abstract void initialize();
+    protected abstract void initialize(T root);
 
     protected void preload(FXMLLoader loader) {
     }
@@ -36,7 +36,7 @@ public abstract class View<T extends Parent> {
             root =loader.load(
                     Objects.requireNonNull(
                             this.getClass().getClassLoader().getResourceAsStream(fxmlPath)));
-            initialize();
+            initialize(root);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

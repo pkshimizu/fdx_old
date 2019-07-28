@@ -16,7 +16,7 @@ public class StorageInfoView extends CustomView<HBox> {
     }
 
     @Override
-    protected void initialize() {
+    protected void initialize(HBox root) {
 
     }
 }

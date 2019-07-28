@@ -30,7 +30,7 @@ public class MainView extends View<AnchorPane> {
     }
 
     @Override
-    protected void initialize() {
+    protected void initialize(AnchorPane root) {
         header.getChildren().addAll(
             systemInfoView.getRoot(),
             storageInfoView.getRoot(),

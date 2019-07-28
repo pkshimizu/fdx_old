@@ -17,7 +17,7 @@ public class FileInfoView extends CustomView<HBox> {
     }
 
     @Override
-    protected void initialize() {
+    protected void initialize(HBox root) {
 
     }
 }

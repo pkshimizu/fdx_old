@@ -20,6 +20,6 @@ public class FileListCellView extends View<AnchorPane> {
     }
 
     @Override
-    protected void initialize() {
+    protected void initialize(AnchorPane root) {
     }
 }
