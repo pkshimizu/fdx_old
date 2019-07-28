@@ -7,6 +7,7 @@ import net.noncore.fdx.common.values.Size;
 import net.noncore.fdx.domain.models.FileModel;
 import net.noncore.fdx.domain.repositories.FileErrorException;
 import net.noncore.fdx.domain.repositories.FileRepository;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -16,6 +17,7 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,6 +60,9 @@ public class FileStore implements FileRepository {
     }
 
     private List<FileModel> toFileModels(File[] files) {
+        if (ArrayUtils.isEmpty(files)) {
+            return Collections.emptyList();
+        }
         return Stream.of(files)
                 .map(this::toFileModel)
                 .collect(Collectors.toList());

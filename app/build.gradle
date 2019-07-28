@@ -3,8 +3,4 @@ dependencies {
     implementation project(':data')
     implementation project(':domain')
     implementation project(':presentation')
-    implementation 'org.springframework.boot:spring-boot-starter'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

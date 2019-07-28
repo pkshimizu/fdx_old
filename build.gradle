@@ -16,6 +16,15 @@ allprojects {
         mavenCentral()
     }
 
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        compileOnly 'org.projectlombok:lombok'
+        compileOnly 'org.apache.commons:commons-lang3:3.9'
+        compileOnly 'commons-collections:commons-collections:3.2.2'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
     dependencyManagement {
         imports {
             mavenBom("org.springframework.boot:spring-boot-dependencies:2.1.6.RELEASE")
