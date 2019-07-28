@@ -1,9 +1,8 @@
 package net.noncore.fdx.domain.repositories;
 
+import net.noncore.fdx.common.values.Path;
 import net.noncore.fdx.common.values.Size;
 import net.noncore.fdx.domain.models.FileModel;
-import net.noncore.fdx.common.values.Path;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

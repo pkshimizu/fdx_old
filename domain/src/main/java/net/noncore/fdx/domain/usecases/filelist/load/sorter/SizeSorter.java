@@ -3,8 +3,6 @@ package net.noncore.fdx.domain.usecases.filelist.load.sorter;
 import net.noncore.fdx.common.values.Size;
 import net.noncore.fdx.domain.usecases.filelist.load.FileDto;
 
-import java.util.Optional;
-
 public class SizeSorter implements Sorter {
     @Override
     public int sortByProperty(FileDto file1, FileDto file2) {

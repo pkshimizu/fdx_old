@@ -1,6 +1,5 @@
 package net.noncore.fdx.common.values;
 
-import javafx.beans.property.StringProperty;
 import lombok.Data;
 
 import java.io.File;
