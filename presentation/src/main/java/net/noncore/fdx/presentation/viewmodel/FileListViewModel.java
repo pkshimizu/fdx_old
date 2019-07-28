@@ -57,7 +57,6 @@ public class FileListViewModel {
         current.getParent().ifPresent(this::loadFileList);
     }
 
-    @SuppressWarnings("unchecked")
     private void loadFileList(Path path) {
         FileListLoadResponse response = fileListLoadUsecase.doIt(
                 FileListLoadRequest.builder()
